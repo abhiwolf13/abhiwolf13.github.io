@@ -53,7 +53,7 @@ function Exercise(results) {
     }
     drawLandmarks(ctx2, [results.poseLandmarks[19]],
                 {color: 'white', fillColor:rightcolor,lineWidth: 5, radius: hitradius});
-    drawLandmarks(ctx2, [results.poseLandmarks[19]],
+    drawLandmarks(ctx2, [results.poseLandmarks[20]],
                     {color: 'white', fillColor:leftcolor,lineWidth: 5, radius: hitradius});
 
 }
