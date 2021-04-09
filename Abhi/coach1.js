@@ -1,11 +1,8 @@
 function MQTTconnect(){
     console.log('connecting to broker.emqx.io'+" "+8083);
-    mqtt=new Paho.MQTT.Client();
-    // broker.emqx.io',8083,'coachjs'
-    host='wss://broker.emqx.io:8084/mqtt'
-    mqtt.connect(host,
-        {clientId:'coachjs',
-            timeout:3,
+    mqtt=new Paho.MQTT.Client('broker.emqx.io',8083,'coachjs');
+    mqtt.connect({timeout:3,
+        useSSL: true,
         onSuccess:function(){console.log('connected');},
         onFailure:function(){setTimeout(MQTTconnect,500)}});
 
