@@ -9,14 +9,19 @@ function MQTTconnect(){
 }
 MQTTconnect();
 
+document.getElementById('formelement').style.display='block';
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
 
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
 
 var athletelandmarks=null;
 var hitradius=0.05*canvasWidth;
 var leftcolor='#00d2ff';
 var rightcolor='#00d2ff';
-
-
 function Exercise(results) {
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
         mqtt.subscribe("athelete");

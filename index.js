@@ -129,67 +129,44 @@ var functionVar=null;
 
 function game(x){
     switch (x) {
-
         case 1:
+            // gamename.innerHTML='Burpees';
 
             $.getScript("Abhi/athelete1.js");
-            exerciseName='athelete';
+            exerciseName='High Knees';
             functionVar=1;
             initialized=1;
-                openNav();
+            openNav();
+
             count=0;
-            played=0;    
+            played=0;
             break;
+
         case 2:
 
             $.getScript("Abhi/coach1.js");
-            exerciseName='coach';
+            exerciseName='Hand Punches';
             functionVar=1;
             initialized=1;
-                openNav();
+            openNav();
+
             count=0;
-            played=0;    
+            played=0;
             break;
+        
         case 3:
 
-            $.getScript("Abhi/athelete2.js");
-            exerciseName='athelete';
+            $.getScript("Eesha/LegRaise.js");
+            exerciseName='Leg Raises';
             functionVar=1;
             initialized=1;
-                openNav();
-            count=0;
-            played=0;    
-            break;
-        case 4:
+            openNav();
 
-            $.getScript("Abhi/coach2.js");
-            exerciseName='coach';
-            functionVar=1;
-            initialized=1;
-                openNav();
             count=0;
-            played=0;    
+            played=0;
             break;
-        case 5:
+        
 
-            $.getScript("Abhi/athelete3.js");
-            exerciseName='athelete';
-            functionVar=1;
-            initialized=1;
-                openNav();
-            count=0;
-            played=0;    
-            break;
-        case 6:
-
-            $.getScript("Abhi/coach3.js");
-            exerciseName='coach';
-            functionVar=1;
-            initialized=1;
-                openNav();
-            count=0;
-            played=0;    
-            break;
         default:
             break;
     }
@@ -206,7 +183,63 @@ function find_angle(A,B,C) {
 
 // ==========================================================================================================
 
+function checkSquat(poses) {
+    let up, down, progress, a,b;  
+    if(poses[27].visibility > 0.2 && poses[28].visibility > 0.2)
+          {   
+              // find squat angle
+              a = find_angle(poses[24],poses[26],poses[28]);
+              b = find_angle(poses[23],poses[25],poses[27]);
+              
+              // standing, if angle is >= 150
+              if(a>=150 && b>=150) {
+                  up = true;
+                  progress = false;
+                  console.log("up");
+              }
+              
+              // squat angle is <=100
+              else if(a<=100 && b<=100) {
+                  down = true;
+                  up = false;
+                  progress = false;
+                  console.log("squat");
+              }
+  
+              else {
+                progress = true;
+              }
+          }
+        return [up, down, progress, a,b]
+  }
 
+// ==========================================================================================================
+
+// draw keypoints - shoulders, hips, knees, ankles
+function draw(color, ctx, poses) {
+    // overriding POSE_CONNECTIONS
+    let connections = [[0,1], [1,3], [2,3], [3,5], [5,7], [0,2], [2,4], [4,6]]
+  
+    drawConnectors(
+        ctx, [
+            poses[11], poses[12],
+            poses[23], poses[24],
+            poses[25], poses[26],
+            poses[27], poses[28],  
+        ], connections,
+        {color: color});
+    
+    drawLandmarks(
+        ctx, [
+            poses[11], poses[12],
+            poses[23], poses[24],
+            poses[25], poses[26],
+            poses[27], poses[28],  
+        ],
+        {color: color, fillColor: color, lineWidth: 4, radius: 6});
+    
+  }
+  
 
 // Run main function
 // ==========================================================================================================
@@ -263,7 +296,10 @@ function onResults(results) {
     ctx2.save();
     ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
     
-
+    ctx2.beginPath();
+    ctx2.globalAlpha=0.6;
+    ctx2.fillStyle='black';
+    ctx2.fillRect(0,canvasHeight*0.9,canvasWidth,canvasHeight*0.1);
     var clr='blue';
     if (functionVar!=null){
         if (!initialized){
@@ -331,18 +367,75 @@ function onResults(results) {
             try{
                 Exercise(results);
 
-               
-
+                if (sampling_count<sampling_rate){
+                    sampling_count+=1;
+                }
+                else {
+                    if (sampled_pose!=null){
+                        var activity=0;
+                        for (let i=0;i<activityLandmark.length;i+=1){
+                            if (results.poseLandmarks[activityLandmark[i]].visibility>minConfidence && sampled_pose[activityLandmark[i]].visibility>minConfidence){
+                                const dx = (results.poseLandmarks[activityLandmark[i]].x - sampled_pose[activityLandmark[i]].x)*100;
+                                const dy = (results.poseLandmarks[activityLandmark[i]].y - sampled_pose[activityLandmark[i]].y)*100;
+                                // console.log(typeof());
+                                var diff= Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
+                                activity+=diff;
+                                
+                            }
+                        }
+                        total_activity+=(Math.round(activity/100));
+                        if (saved_activity.length<saved_length){
+                            saved_activity.push(activity/10);
+                        }
+                        else{
+                            for(let i=0;i<saved_length-1;i+=1){
+                                saved_activity[i]=saved_activity[i+1];
+                            }
+                            saved_activity[saved_length-1]=activity/10;
+                        }
+                    }
+                    sampled_pose=results.poseLandmarks;
+                    sampling_count=0;
+            
+                }
+                // Intensity
+            
+                if(saved_activity.length>=Math.floor(fr*3/sampling_rate)){
+                    var use_act=Math.floor(fr*3/sampling_rate);
+                    var act_sum=0
+                    for(let i=saved_activity.length-use_act-1;i<saved_activity.length;i+=1){
+                        act_sum+=saved_activity[i];
+                    }
+                }
             }
             catch(err){}
     
 
+
+            ctx2.globalAlpha=1;
+            ctx2.fillStyle='yellow';
+            ctx2.font = "900 "+canvasHeight*0.05+"px Arial";
+            ctx2.fillText('Score: '+count,0,canvasHeight*0.975);
+        
+            // Activity
 
   
         }
     }
     
     
+    var intensity=Math.round((act_sum/use_act));
+    if (isNaN(intensity)){
+        intensity=0;
+    }
+    ctx2.globalAlpha=1;
+    ctx2.fillStyle='yellow';
+    ctx2.font = "900 "+canvasHeight*0.05+"px Arial";
+    ctx2.fillText('Activity: '+total_activity,canvasWidth/4,canvasHeight*0.975);
+    ctx2.fillText('Intensity: '+intensity,canvasWidth/2,canvasHeight*0.975);
+    ctx2.fillText(exerciseName,canvasWidth/1.4,canvasHeight*0.975);
+
+    // console.log(intensity);
     ctx1.restore();
     ctx2.restore();
     
