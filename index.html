@@ -27,7 +27,7 @@
     <button id='menubutton' class="btn btn-primary btn-lg" onclick="openNav()">
         Menu
     </button>
-    <button id='helpbutton' class="btn btn-primary btn-lg" onclick="openNav()">
+    <button id='helpbutton' class="btn btn-primary btn-lg" onclick="openhelp()">
         Help
     </button>
     <div class='media' style="height: 720;">
@@ -36,20 +36,16 @@
         <canvas id="output2" width="1280" height="720"></canvas>
     </div>
         <form id="formelement">
-            <label for="fname">First name:</label><br>
-            <input type="text" id="fname" name="fname"><br>
-            <label for="lname">Last name:</label><br>
-            <input type="text" id="lname" name="lname">
             <div class="slidecontainer">
-                <label for="myRange">Leg-Hip-Leg Angle</label><br>
-                <input type="range" min="0" max="180" value="0" class="slider" id="myRange">
-                <p>Value: <span id="demo"></span></p>
-                <label for="myRange">Left Shoulder Angle</label><br>
-                <input type="range" min="0" max="180" value="0" class="slider" id="myRange">
-                <p>Value: <span id="demo"></span></p>
-                <label for="myRange">Right Shoulder Angle</label><br>
-                <input type="range" min="0" max="180" value="0" class="slider" id="myRange">
-                <p>Value: <span id="demo"></span></p>
+                <label for="lhl">Leg-Hip-Leg Angle</label><br>
+                <input type="range" min="0" max="180" value="0" class="slider" id="lhl">
+                <p>Value: <span id="lhldemo"></span></p>
+                <label for="lshoulder">Left Shoulder Angle</label><br>
+                <input type="range" min="0" max="180" value="0" class="slider" id="lshoulder">
+                <p>Value: <span id="lshoulderdemo"></span></p>
+                <label for="rshoulder">Right Shoulder Angle</label><br>
+                <input type="range" min="0" max="180" value="0" class="slider" id="rshoulder">
+                <p>Value: <span id="rshoulderdemo"></span></p>
               </div>
               
         </form>
@@ -57,34 +53,31 @@
     <div id="myNav" class="overlay">
         <div class="overlay-content">
             <button id='ballhoop' class="btn btn-danger btn-lg" onclick="game(1)">
-                Athelete
+                Athelete 1
             </button>
             <button id='ballhoop' class="btn btn-danger btn-lg" onclick="game(2)">
-                Coach
+                Coach 1
             </button>
         </div>
         <br>
         <div class="overlay-content">
-            <button id='ballhoop' class="btn btn-primary btn-lg" onclick="game(3)">
-                Athelete
+            <button id='ballhoop' class="btn btn-success btn-lg" onclick="game(3)">
+                Athelete 2
             </button>
-            <button id='ballhoop' class="btn btn-primary btn-lg" onclick="game(4)">
-                Coach
-            </button>
-        </div>
-        <br>
-        <div class="overlay-content">
-            <button id='ballhoop' class="btn btn-success btn-lg" onclick="game(5)">
-                Athelete
-            </button>
-            <button id='ballhoop' class="btn btn-success btn-lg" onclick="game(6)">
-                Coach
+            <button id='ballhoop' class="btn btn-success btn-lg" onclick="game(4)">
+                Coach 2
             </button>
         </div>
+
     </div>
-    <div id="helpinfo">
+    <div id="helpinfo" class="overlay">
         <div class="overlay-content">
-            
+            <ul>
+                <li>Select 1 and 1 or 2 and 2</li>
+                <li>Allow camera to capture</li>
+                <li>Make sure athelete's body is in the frame</li>
+                <li>change parameters in coach console to change diffulty for athetes</li>
+            </ul>
         </div>
     </div>
     <!-- Load index.js after the content of the page -->
@@ -179,6 +172,10 @@ video{
     top: 10%;
     left: 0;
     
+}
+#helpinfo{
+    background-color: white;
+    width: 0;
 }
 .slidecontainer {
   width: 100%;

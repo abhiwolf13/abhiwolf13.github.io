@@ -10,12 +10,26 @@ function MQTTconnect(){
 MQTTconnect();
 
 document.getElementById('formelement').style.display='block';
-var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value;
+var slider1 = document.getElementById("lhl");
+var output1 = document.getElementById("lhldemo");
+output1.innerHTML = slider1.value;
 
-slider.oninput = function() {
-  output.innerHTML = this.value;
+var slider2 = document.getElementById("lshoulder");
+var output2 = document.getElementById("lshoulderdemo");
+output2.innerHTML = slider2.value;
+
+var slider3 = document.getElementById("rshoulder");
+var output3 = document.getElementById("rshoulderdemo");
+output3.innerHTML = slider3.value;
+
+slider1.oninput = function() {
+  output1.innerHTML = this.value;
+}
+slider2.oninput = function() {
+    output2.innerHTML = this.value;
+}
+slider3.oninput = function() {
+  output3.innerHTML = this.value;
 }
 
 var athletelandmarks=null;
@@ -25,7 +39,7 @@ var rightcolor='#00d2ff';
 
 
 function Exercise(results) {
-
+    ctx2.globalAlpha=1;
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
 
         // results.poseLandmarks.push(slider.value);
@@ -43,14 +57,16 @@ function Exercise(results) {
     if(athletelandmarks!=null){
         // drawConnectors(ctx2, athletelandmarks, [[0,1],[0,2],[2,4],[1,3],[3,5],[5,7],[7,9],[9,11],[4,6],[6,8],],
         //     {color: 'blue'});
-        ctx2.font = Math.floor((canvasWidth*40)/720) + "px Algerian";
-        ctx2.textAlign = "center";
+        ctx2.font = Math.floor((canvasWidth*40)/720) + "px Arial";
+        ctx2.textAlign = "left";
         ctx2.globalAlpha=0.6;
         ctx2.fillStyle='black';
-        ctx2.fillRect(0.68*canvasWidth,canvasHeight*0.3,0.24*canvasWidth,canvasHeight*0.2);
+        ctx2.fillRect(0,canvasHeight*0.3,0.24*canvasWidth,canvasHeight*0.3);
         ctx2.globalAlpha=1;
         ctx2.fillStyle='#FFC107';
-        ctx2.fillText(Math.floor(athletelandmarks[2]), 0.80*canvasWidth, 0.38*canvasHeight);
+        ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.38*canvasHeight);
+        ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.48*canvasHeight);
+        ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.58*canvasHeight);
         
     }
     

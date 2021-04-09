@@ -306,6 +306,10 @@ function onResults(results) {
     ctx2.save();
     ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
     
+    ctx2.beginPath();
+    ctx2.globalAlpha=0.6;
+    ctx2.fillStyle='black';
+    ctx2.fillRect(0,canvasHeight*0.9,canvasWidth,canvasHeight*0.1);
     var clr='blue';
     if (functionVar!=null){
         if (!initialized){
@@ -373,9 +377,52 @@ function onResults(results) {
             try{
                 Exercise(results);
 
+                if (sampling_count<sampling_rate){
+                    sampling_count+=1;
+                }
+                else {
+                    if (sampled_pose!=null){
+                        var activity=0;
+                        for (let i=0;i<activityLandmark.length;i+=1){
+                            if (results.poseLandmarks[activityLandmark[i]].visibility>minConfidence && sampled_pose[activityLandmark[i]].visibility>minConfidence){
+                                const dx = (results.poseLandmarks[activityLandmark[i]].x - sampled_pose[activityLandmark[i]].x)*100;
+                                const dy = (results.poseLandmarks[activityLandmark[i]].y - sampled_pose[activityLandmark[i]].y)*100;
+                                // console.log(typeof());
+                                var diff= Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
+                                activity+=diff;
+                                
+                            }
+                        }
+                        total_activity+=(Math.round(activity/100));
+                        if (saved_activity.length<saved_length){
+                            saved_activity.push(activity/10);
+                        }
+                        else{
+                            for(let i=0;i<saved_length-1;i+=1){
+                                saved_activity[i]=saved_activity[i+1];
+                            }
+                            saved_activity[saved_length-1]=activity/10;
+                        }
+                    }
+                    sampled_pose=results.poseLandmarks;
+                    sampling_count=0;
+            
+                }
+                // Intensity
+            
+                if(saved_activity.length>=Math.floor(fr*3/sampling_rate)){
+                    var use_act=Math.floor(fr*3/sampling_rate);
+                    var act_sum=0
+                    for(let i=saved_activity.length-use_act-1;i<saved_activity.length;i+=1){
+                        act_sum+=saved_activity[i];
+                    }
+                }
             }
             catch(err){}
     
+
+        
+            // Activity
 
   
         }

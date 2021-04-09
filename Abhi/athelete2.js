@@ -3,11 +3,12 @@ function MQTTconnect(){
     mqtt=new Paho.MQTT.Client('broker.emqx.io',8084,'atheletejs');
     mqtt.connect({timeout:3,
         useSSL: true,
-        onSuccess:function(){console.log('connected');},
+        onSuccess:function(){mqtt.subscribe("coach");console.log('connected');},
         onFailure:function(){setTimeout(MQTTconnect,500)}});
 
 }
 MQTTconnect();
+document.getElementById('formelement').style.display='none';
 var coachlandmarks=null;
 var hitradius=0.05*canvasWidth;
 
@@ -15,9 +16,9 @@ var lefthit=0;
 var righthit=0;
 
 function Exercise(results) {
-    
-    mqtt.subscribe("coach");
-    msgtosend=new Paho.MQTT.Message(JSON.stringify(results.poseLandmarks.slice(11,29)));
+    ctx2.globalAlpha=1;
+    msgdata=[[results.poseLandmarks[27].x,results.poseLandmarks[27].y],[results.poseLandmarks[28].x,results.poseLandmarks[28].y],[(results.poseLandmarks[23].x+results.poseLandmarks[24].x)/2,(results.poseLandmarks[23].y,results.poseLandmarks[24].y)/2],[(results.poseLandmarks[11].x+results.poseLandmarks[12].x)/2,(results.poseLandmarks[11].y,results.poseLandmarks[12].y)/2]];
+    msgtosend=new Paho.MQTT.Message(JSON.stringify(msgdata));
     msgtosend.destinationName='athelete';
     mqtt.send(msgtosend);
     mqtt.onMessageArrived=function(msg){
@@ -28,6 +29,8 @@ function Exercise(results) {
         
     }
     if(coachlandmarks!=null){
+
+
 
         if(Math.pow(Math.abs((results.poseLandmarks[28].x-coachlandmarks[1].x)*canvasWidth),2)+Math.pow(Math.abs((results.poseLandmarks[28].y-coachlandmarks[1].y)*canvasHeight),2)<=hitradius*hitradius){
             lefthit=1;

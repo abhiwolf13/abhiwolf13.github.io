@@ -8,6 +8,7 @@ function MQTTconnect(){
 
 }
 MQTTconnect();
+document.getElementById('formelement').style.display='none';
 var coachlandmarks=null;
 var hitradius=0.05*canvasWidth;
 
@@ -16,7 +17,7 @@ var righthit=0;
 
 
 function Exercise(results) {
-    
+    ctx2.globalAlpha=1;
     a=find_angle(results.poseLandmarks[24],results.poseLandmarks[26],results.poseLandmarks[28]);
     b=find_angle(results.poseLandmarks[23],results.poseLandmarks[25],results.poseLandmarks[27]);
     c=find_angle(results.poseLandmarks[25],results.poseLandmarks[23],results.poseLandmarks[26]);
