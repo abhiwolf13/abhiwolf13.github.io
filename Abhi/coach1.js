@@ -3,7 +3,7 @@ function MQTTconnect(){
     mqtt=new Paho.MQTT.Client('broker.emqx.io',8084,'coachjs');
     mqtt.connect({timeout:3,
         useSSL: true,
-        onSuccess:function(){console.log('connected');},
+        onSuccess:function(){mqtt.subscribe("athelete");console.log('connected');},
         onFailure:function(){setTimeout(MQTTconnect,500)}});
 
 }
@@ -22,11 +22,14 @@ var athletelandmarks=null;
 var hitradius=0.05*canvasWidth;
 var leftcolor='#00d2ff';
 var rightcolor='#00d2ff';
+
+
 function Exercise(results) {
+
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
-        mqtt.subscribe("athelete");
-        results.poseLandmarks.push(slider.value);
-    msgtosend=new Paho.MQTT.Message(JSON.stringify(results.poseLandmarks));
+
+        // results.poseLandmarks.push(slider.value);
+    msgtosend=new Paho.MQTT.Message(JSON.stringify([slider.value]));
     msgtosend.destinationName='coach';
     mqtt.send(msgtosend);
     mqtt.onMessageArrived=function(msg){
@@ -38,8 +41,17 @@ function Exercise(results) {
     }
 
     if(athletelandmarks!=null){
-        drawConnectors(ctx2, athletelandmarks, POSE_CONNECTIONS,
-            {color: 'blue'});
+        // drawConnectors(ctx2, athletelandmarks, [[0,1],[0,2],[2,4],[1,3],[3,5],[5,7],[7,9],[9,11],[4,6],[6,8],],
+        //     {color: 'blue'});
+        ctx2.font = Math.floor((canvasWidth*40)/720) + "px Algerian";
+        ctx2.textAlign = "center";
+        ctx2.globalAlpha=0.6;
+        ctx2.fillStyle='black';
+        ctx2.fillRect(0.68*canvasWidth,canvasHeight*0.3,0.24*canvasWidth,canvasHeight*0.2);
+        ctx2.globalAlpha=1;
+        ctx2.fillStyle='#FFC107';
+        ctx2.fillText(Math.floor(athletelandmarks[2]), 0.80*canvasWidth, 0.38*canvasHeight);
+        
     }
     
 

@@ -1,7 +1,8 @@
 function MQTTconnect(){
-    console.log('connecting to broker.emqx.io'+" "+8083);
-    mqtt=new Paho.MQTT.Client('broker.emqx.io',8083,'coachjs');
+    console.log('connecting to broker.emqx.io'+" "+8084);
+    mqtt=new Paho.MQTT.Client('broker.emqx.io',8084,'coachjs');
     mqtt.connect({timeout:3,
+        useSSL: true,
         onSuccess:function(){console.log('connected');},
         onFailure:function(){setTimeout(MQTTconnect,500)}});
 
@@ -25,7 +26,7 @@ function Exercise(results) {
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
         mqtt.subscribe("athelete");
         results.poseLandmarks.push(slider.value);
-    msgtosend=new Paho.MQTT.Message(JSON.stringify(results.poseLandmarks));
+    msgtosend=new Paho.MQTT.Message(JSON.stringify([results.poseLandmarks[19],results.poseLandmarks[20]]));
     msgtosend.destinationName='coach';
     mqtt.send(msgtosend);
     mqtt.onMessageArrived=function(msg){
@@ -37,7 +38,7 @@ function Exercise(results) {
     }
 
     if(athletelandmarks!=null){
-        drawConnectors(ctx2, athletelandmarks, POSE_CONNECTIONS,
+        drawConnectors(ctx2, athletelandmarks, [[0,1],[0,2],[2,4],[1,3],[3,5],[5,7],[7,9],[9,11],[4,6],[6,8],],
             {color: 'blue'});
     }
     
@@ -52,7 +53,7 @@ function Exercise(results) {
     }
     drawLandmarks(ctx2, [results.poseLandmarks[19]],
                 {color: 'white', fillColor:rightcolor,lineWidth: 5, radius: hitradius});
-    drawLandmarks(ctx2, [results.poseLandmarks[19]],
+    drawLandmarks(ctx2, [results.poseLandmarks[20]],
                     {color: 'white', fillColor:leftcolor,lineWidth: 5, radius: hitradius});
 
 }
