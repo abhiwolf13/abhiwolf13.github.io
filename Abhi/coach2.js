@@ -9,14 +9,8 @@ function MQTTconnect(){
 }
 MQTTconnect();
 
-document.getElementById('formelement').style.display='block';
-var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value;
+document.getElementById('formelement').style.display='none';
 
-slider.oninput = function() {
-  output.innerHTML = this.value;
-}
 
 var athletelandmarks=null;
 var hitradius=0.05*canvasWidth;
@@ -24,6 +18,10 @@ var leftcolor='#00d2ff';
 var rightcolor='#00d2ff';
 function Exercise(results) {
     ctx2.globalAlpha=1;
+    ctx2.globalAlpha=1;
+    ctx2.font = Math.floor((canvasWidth*20)/720) + "px Arial";
+    ctx2.fillText('Coach 2', 0, canvasHeight);
+
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
     msgdata=[[results.poseLandmarks[19].x,results.poseLandmarks[19].y],[results.poseLandmarks[20].x,results.poseLandmarks[20].y]];
     msgtosend=new Paho.MQTT.Message(JSON.stringify(msgdata));
