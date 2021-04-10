@@ -54,21 +54,24 @@ function Exercise(results) {
         // console.log(msg[0]);
     }
 
-    if(athletelandmarks!=null){
+    // if(athletelandmarks!=null){
         // drawConnectors(ctx2, athletelandmarks, [[0,1],[0,2],[2,4],[1,3],[3,5],[5,7],[7,9],[9,11],[4,6],[6,8],],
         //     {color: 'blue'});
-        ctx2.font = Math.floor((canvasWidth*40)/720) + "px Arial";
+        ctx2.font = Math.floor((canvasWidth*20)/720) + "px Arial";
         ctx2.textAlign = "left";
         ctx2.globalAlpha=0.6;
         ctx2.fillStyle='black';
         ctx2.fillRect(0,canvasHeight*0.3,0.24*canvasWidth,canvasHeight*0.3);
         ctx2.globalAlpha=1;
         ctx2.fillStyle='#FFC107';
-        ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.38*canvasHeight);
-        ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.48*canvasHeight);
-        ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.58*canvasHeight);
+        // ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.38*canvasHeight);
+        // ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.48*canvasHeight);
+        // ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.58*canvasHeight);
+        ctx2.fillText('Leg-Hip-Leg: 100', 0.12*canvasWidth, 0.38*canvasHeight);
+        ctx2.fillText('Left Shoulder: 100', 0.12*canvasWidth, 0.48*canvasHeight);
+        ctx2.fillText('Leg-Hip-Leg: 100', 0.12*canvasWidth, 0.58*canvasHeight);
         
-    }
+    // }
     
 
     leftcolor='#00d2ff';
