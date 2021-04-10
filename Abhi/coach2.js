@@ -38,6 +38,7 @@ function Exercise(results) {
     if(athletelandmarks!=null){
         ctx2.beginPath();
         ctx2.strokeStyle='red';
+        ctx2.lineCap = "round";
         ctx2.lineWidth=30;
         ctx2.beginPath();
         ctx2.moveTo(athletelandmarks[3][0]*canvasWidth, athletelandmarks[3][1]*canvasHeight);
