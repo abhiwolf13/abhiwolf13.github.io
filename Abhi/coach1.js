@@ -43,7 +43,7 @@ function Exercise(results) {
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
 
         // results.poseLandmarks.push(slider.value);
-    msgtosend=new Paho.MQTT.Message(JSON.stringify([slider.value]));
+    msgtosend=new Paho.MQTT.Message(JSON.stringify([slider1.value]));
     msgtosend.destinationName='coach';
     mqtt.send(msgtosend);
     mqtt.onMessageArrived=function(msg){
