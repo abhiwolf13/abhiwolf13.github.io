@@ -18,8 +18,11 @@ var righthit=0;
 
 function Exercise(results) {
     ctx2.globalAlpha=1;
-    a=find_angle(results.poseLandmarks[24],results.poseLandmarks[26],results.poseLandmarks[28]);
-    b=find_angle(results.poseLandmarks[23],results.poseLandmarks[25],results.poseLandmarks[27]);
+    ctx2.font = Math.floor((canvasWidth*20)/720) + "px Arial";
+    ctx2.fillText('Athelete 1', 0, canvasHeight);
+
+    a=find_angle(results.poseLandmarks[16],results.poseLandmarks[12],results.poseLandmarks[24]);
+    b=find_angle(results.poseLandmarks[15],results.poseLandmarks[11],results.poseLandmarks[23]);
     c=find_angle(results.poseLandmarks[25],results.poseLandmarks[23],results.poseLandmarks[26]);
 
 
@@ -35,18 +38,38 @@ function Exercise(results) {
     }
     if(coachlandmarks!=null){
 
-       if(c>coachlandmarks[0]){
+       if(c>coachlandmarks[0] && a>coachlandmarks[1] && b>coachlandmarks[2]){
         drawConnectors(ctx2, results.poseLandmarks, POSE_CONNECTIONS,
             {color: '#00ff00'});
        }
        else{
         drawConnectors(ctx2, results.poseLandmarks, POSE_CONNECTIONS,
             {color: 'white'}); 
-       }
- 
+        }
 
-        // drawLandmarks(ctx1, [coachlandmarks[0]],
-        //             {color: 'white', fillColor:'blue',lineWidth: 5, radius: 1   });
+        ctx2.font = Math.floor((canvasWidth*20)/720) + "px Arial";
+        ctx2.textAlign = "left";
+        ctx2.globalAlpha=0.6;
+        ctx2.fillStyle='black';
+        ctx2.fillRect(0,canvasHeight*0.5,0.24*canvasWidth,canvasHeight*0.3);
+        ctx2.globalAlpha=1;
+        ctx2.fillStyle='red';
+        if(c>=coachlandmarks[0]){
+            ctx2.fillStyle='#00ff00';
+        }
+        ctx2.fillText('Leg-Hip-Leg: '+coachlandmarks[0], 0*canvasWidth, 0.58*canvasHeight);
+        ctx2.fillStyle='red';
+        if(a>=coachlandmarks[1]){
+            ctx2.fillStyle='#00ff00';
+        }
+        ctx2.fillText('Left Shoulder: '+coachlandmarks[1], 0*canvasWidth, 0.68*canvasHeight);
+        ctx2.fillStyle='red';
+        if(b>=coachlandmarks[2]){
+            ctx2.fillStyle='#00ff00';
+        }
+        ctx2.fillText('Right Shoulder: '+coachlandmarks[2], 0*canvasWidth, 0.78*canvasHeight);
+        
+
     }
 
     

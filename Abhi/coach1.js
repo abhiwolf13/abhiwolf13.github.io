@@ -40,10 +40,14 @@ var rightcolor='#00d2ff';
 
 function Exercise(results) {
     ctx2.globalAlpha=1;
+    ctx2.globalAlpha=1;
+    ctx2.font = Math.floor((canvasWidth*20)/720) + "px Arial";
+    ctx2.fillText('Coach 1', 0, canvasHeight);
+
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
 
         // results.poseLandmarks.push(slider.value);
-    msgtosend=new Paho.MQTT.Message(JSON.stringify([slider1.value]));
+    msgtosend=new Paho.MQTT.Message(JSON.stringify([slider1.value,slider2.value,slider3.value]));
     msgtosend.destinationName='coach';
     mqtt.send(msgtosend);
     mqtt.onMessageArrived=function(msg){
@@ -54,24 +58,32 @@ function Exercise(results) {
         // console.log(msg[0]);
     }
 
-    // if(athletelandmarks!=null){
+    if(athletelandmarks!=null){
         // drawConnectors(ctx2, athletelandmarks, [[0,1],[0,2],[2,4],[1,3],[3,5],[5,7],[7,9],[9,11],[4,6],[6,8],],
         //     {color: 'blue'});
         ctx2.font = Math.floor((canvasWidth*20)/720) + "px Arial";
         ctx2.textAlign = "left";
         ctx2.globalAlpha=0.6;
         ctx2.fillStyle='black';
-        ctx2.fillRect(0,canvasHeight*0.3,0.24*canvasWidth,canvasHeight*0.3);
+        ctx2.fillRect(0,canvasHeight*0.5,0.24*canvasWidth,canvasHeight*0.3);
         ctx2.globalAlpha=1;
-        ctx2.fillStyle='#FFC107';
-        // ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.38*canvasHeight);
-        // ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.48*canvasHeight);
-        // ctx2.fillText(Math.floor(athletelandmarks[2]), 0.12*canvasWidth, 0.58*canvasHeight);
-        ctx2.fillText('Leg-Hip-Leg: 100', 0.12*canvasWidth, 0.38*canvasHeight);
-        ctx2.fillText('Left Shoulder: 100', 0.12*canvasWidth, 0.48*canvasHeight);
-        ctx2.fillText('Leg-Hip-Leg: 100', 0.12*canvasWidth, 0.58*canvasHeight);
+        ctx2.fillStyle='red';
+        if(athletelandmarks[2]>=slider1.value){
+            ctx2.fillStyle='#00ff00';
+        }
+        ctx2.fillText('Leg-Hip-Leg: '+Math.floor(athletelandmarks[2]), 0*canvasWidth, 0.58*canvasHeight);
+        ctx2.fillStyle='red';
+        if(athletelandmarks[0]>=slider2.value){
+            ctx2.fillStyle='#00ff00';
+        }
+        ctx2.fillText('Left Shoulder: '+Math.floor(athletelandmarks[0]), 0*canvasWidth, 0.68*canvasHeight);
+        ctx2.fillStyle='red';
+        if(athletelandmarks[1]>=slider3.value){
+            ctx2.fillStyle='#00ff00';
+        }
+        ctx2.fillText('Right Shoulder: '+Math.floor(athletelandmarks[1]), 0*canvasWidth, 0.78*canvasHeight);
         
-    // }
+    }
     
 
     leftcolor='#00d2ff';
