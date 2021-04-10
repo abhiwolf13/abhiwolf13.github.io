@@ -19,7 +19,7 @@ var rightcolor='#00d2ff';
 function Exercise(results) {
     ctx2.globalAlpha=1;
     ctx2.globalAlpha=1;
-    ctx2.font = Math.floor((canvasWidth*20)/720) + "px Arial";
+    ctx2.font = Math.floor((canvasWidth*20)/720) + "px Arial 900";
     ctx2.fillText('Coach 2', 0, canvasHeight);
 
     ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
@@ -45,12 +45,12 @@ function Exercise(results) {
         ctx2.stroke();
         ctx2.closePath();
         ctx2.beginPath();
-        ctx2.moveTo(athletelandmarks[2][0]*canvasWidth, athletelandmarks[2][1]*canvasHeight);
+        ctx2.moveTo(athletelandmarks[3][0]*canvasWidth, athletelandmarks[3][1]*canvasHeight);
         ctx2.lineTo(athletelandmarks[0][0]*canvasWidth, athletelandmarks[0][1]*canvasHeight);
         ctx2.stroke();
         ctx2.closePath();
         ctx2.beginPath();
-        ctx2.moveTo(athletelandmarks[2][0]*canvasWidth, athletelandmarks[2][1]*canvasHeight);
+        ctx2.moveTo(athletelandmarks[3][0]*canvasWidth, athletelandmarks[3][1]*canvasHeight);
         ctx2.lineTo(athletelandmarks[1][0]*canvasWidth, athletelandmarks[1][1]*canvasHeight);
         ctx2.stroke();
         ctx2.closePath();
