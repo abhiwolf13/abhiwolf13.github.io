@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/knn-classifier"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div style="text-align: center; background-color: white;">
+       <h2> Apollo's Watch</h2>
+    </div>
+    <div id='interface' class="flex-container">
+        <div id="faceRecognition" class="flex-child">
+            <div class='media' style="height: 500;">
+                <video autoplay playsinline muted width="500vw" height="300vh" id="webcam" ></video>
+                <!-- <canvas id="output" width="400vw" height="300vh"></canvas> -->
+            </div>
+            <button type="button" class="btn btn-danger" id="class-a">Abhi</button>
+            <button type="button" class="btn btn-danger" id="class-b">Dwayne</button>
+            <button type="button" class="btn btn-danger" id="class-c">Dakota</button>
+            <div id="textFeedback"></div>
+        </div>
+        <div id="reminder" class="flex-child">
+
+
+            <!-- <button id="startBtn">Start Listening</button>
+                <button id="startBtn">Start Listening</button> -->
+                <div style="text-align: center; background-color: white; width: 100%; align-self: center; align-content: center; height: 55vh; overflow:scroll;" >   
+                    <h2>Tasks to do</h2>
+    
+                    <ul id="reminderlist"></ul>
+                </div>
+                <button id="startBtn" type="button" class="btn btn-success" >Start Listening</button>
+                <button id="remindBtn" class="btn btn-danger" onclick="document.getElementById('reminditems').style.display='block'">Add Task</button>
+                <button id="jogBtn" class="btn btn-danger" onclick="jogmemory()">Jog Memory</button>
+                <div>
+            </div>
+        </div>
+        <div class="overlay" id="reminditems" onclick="document.getElementById('reminditems').style.display='none'">
+            <div class="overlay-content">
+                <button  class="btn btn-info" onclick='addreminder("Medicine at 12 PM");'>Medicine@12</button>
+                <button  class="btn btn-info" onclick='addreminder("Medicine at 6 PM");'>Medicine@6</button>
+                <button  class="btn btn-info" onclick='addreminder("Medicine at 9 PM");'>Medicine@9</button>
+                <button  class="btn btn-info" onclick='addreminder("Call son");'>Call son</button>
+                <button  class="btn btn-info" onclick='addreminder("Call daughter");'>Call daughter</button>
+                <button  class="btn btn-info" onclick='addreminder("Collect mail");'>Collect mail</button>
+            </div>
+        </div>
+        <button id="emergencybutton" class="btn btn-warning" onclick="Emergency();">Emergency</button>
+        <div id="mapholder"><iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2435.6426278871327!2d72.91474423590492!3d21.091622778432566!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1618736964152!5m2!1sen!2sin" width="500vw" height="400vh" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            <div>Address: 100, Abc building, near tower, Mumbai</div>
+            <div>Contact: John Doe 90xxxxxxxx</div>
+        </div>
+
+    </div>
+    <script src="index.js"></script>
+    <script src="voiceassistant.js"></script>
+    <script src="face-api.js"></script>
+    <script>
+
+
+ 
+
+
+    </script>
+
+</body>
+
+</html>
