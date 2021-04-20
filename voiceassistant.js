@@ -42,7 +42,7 @@ if (typeof SpeechRecognition === "undefined") {
 			result.appendChild(p);
 
 			// text to speech
-			recognition.stop();
+			toggleBtn();
 			stoplistening(recognition);
 			speechSynthesis.speak(new SpeechSynthesisUtterance(response));
 			
@@ -51,7 +51,7 @@ if (typeof SpeechRecognition === "undefined") {
 		}
 	}
 	// recognition.start();
-	let listening = false;
+	var listening = false;
 	toggleBtn = () => {
 		if (listening) {
 			recognition.stop();
@@ -69,7 +69,7 @@ if (typeof SpeechRecognition === "undefined") {
 }
 
 async function stoplistening(recognition){
-	setTimeout(function(){recognition.start();startBtn.textContent = "Stop listening"; startBtn.className="btn btn-warning";},3000);
+	setTimeout(function(){toggleBtn();},3000);
 }
 // processor
 function process(rawText) {
@@ -77,7 +77,7 @@ function process(rawText) {
 	text = rawText.toLowerCase();
 	text = rawText.split(" ");
 	check=text.shift();
-	console.log(check);
+	// console.log(check);
 	let response = null;
 	switch(check) {
 		case "remind":
@@ -89,7 +89,6 @@ function process(rawText) {
 		case "yes":
 			response='yes';
 			if(replytimer-timer>0){
-				console.log('aa');
 				reminderarray.splice(taskcomplete,1);
 				updatelist();
 			}
@@ -114,22 +113,26 @@ function process(rawText) {
 function addreminder(topic){
 	reminderarray.push(topic);
 	updatelist();
-	startBtn.className="btn btn-success";
-	recognition.stop();
-	stoplistening(recognition);
+	if(listening){
+		toggleBtn();
+		stoplistening(recognition);
+
+	}
 	speechSynthesis.speak(new SpeechSynthesisUtterance(topic));
 }
 
 function HealthEmergency(){
-	recognition.stop(); 
 	speechSynthesis.speak(new SpeechSynthesisUtterance("Health Emergency"));
 }
 
 function ask(idx){
-	startBtn.className="btn btn-success";
-	startBtn.textContent = "Start listening";
-	recognition.stop();
-	stoplistening(recognition);
+	if(!listening){
+		stoplistening(recognition);
+	}
+	else{
+		toggleBtn();
+		stoplistening(recognition);
+	}
 	speechSynthesis.speak(new SpeechSynthesisUtterance("Have you finished your task "+reminderarray[idx]));
 	replytimer=timer+8;
 	taskcomplete=idx;
