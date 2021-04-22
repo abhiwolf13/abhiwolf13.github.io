@@ -29,17 +29,20 @@ function MQTTconnect(sub,pub){
 
 }
 
+if(connected){
 
-
-mqtt.onMessageArrived=function(msg){
-    console.log('a');
-
-    msg=msg.payloadString;
-    msg=JSON.parse(msg);
-    output.innerHTML=msg;
-    console.log(typeof msg);
-    
+    setInterval(
+        mqtt.onMessageArrived=function(msg){
+        console.log('a');
+        msg=msg.payloadString;
+        msg=JSON.parse(msg);
+        output.innerHTML=msg;
+        console.log(typeof msg);
+        
+    }
+    ,500);
 }
+
 
 
 // app(sub,pub);
