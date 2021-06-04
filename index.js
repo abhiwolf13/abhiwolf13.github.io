@@ -44,7 +44,10 @@ function show(panel) {
 function openmenu() {
   document.getElementById("menu").style.top = "0";
 }
-if (navigator.userAgentData.mobile == true) {
+if (
+  navigator.userAgentData.mobile == true ||
+  window.innerWidth <= window.innerHeight
+) {
   document.getElementById("info").style.left = "0";
   document.getElementById("info").style.width = "100vw";
   document.getElementById("info").style.position = "relative";
