@@ -1,189 +1,105 @@
-var timer=0;
-setInterval(function(){timer+=1;},1000);
-const webcamElement  = document.getElementById('webcam');
-// canvasElement=document.getElementById('output')
-// canvasCtx = canvasElement.getContext('2d');
-const classifier = knnClassifier.create();
-
-const list = document.createElement("ul");
-var reminderlist = document.getElementById('reminderlist');
-
-var lastperson=null;
-var lastspeechutterence=0;
-var reminderarray=[];
-
-var imagelist=[['faces/rock1.jpg','faces/rock2.jpg','faces/rock3.jpg','faces/rock4.jpg','faces/rock5.jpg'],['faces/dakota1.jpg','faces/dakota2.jpg','faces/dakota3.jpg','faces/dakota4.jpg','faces/dakota5.jpg']]
-var imagedata= new Image();
-imagedata.height=500;
-imagedata.width=500;
-
-var trained=0;
-
-
-emergencycode=0;
-
-
-
-function updatelist(){
-  reminderlist.innerHTML="";
-  for (let index = 0; index < reminderarray.length; index++) {
-
-    let li = document.createElement('li');
-        li.innerHTML = reminderarray[index];
-      list.appendChild(li);
-      var span = document.createElement("SPAN");
-      var txt = document.createTextNode("\u00D7");
-      span.className = "close";
-      span.appendChild(txt);
-      span.onclick = function() {
-        reminderarray.splice(index,1);
-        updatelist();
-      }
-      li.appendChild(span);
-      reminderlist.appendChild(li); 
-  }
-}
-
-function jogmemory(){
-  if(reminderarray.length!=0){
-
-    idx=Math.floor(Math.random()*reminderarray.length);
-    ask(idx);
-  }
-}
-
-function sendEmail(position) {
-  Email.send({
-    Host: "smtp.gmail.com",
-    Username: "abhiladexperiments@gmail.com",
-    Password: "Experiment@1",
-    To: 'abhilad1009@gmail.com',
-    From: "abhiladexperiments@gmail.com",
-    Subject: "Alzhimers Emergency",
-    Body: "Location: Lat-"+position.coords.latitude+" Long-"+position.coords.longitude +" Health Metrics"
-
-  })
-
-}
-
-function showPosition(position) {
-  console.log(position.coords.latitude,position.coords.longitude);
-}
-var helpaudio=null;
-
-var speechstate=0;
-
-function Emergency(){
-  if(emergencycode==0){
-  if(listening){
-    speechstate=1;
-    toggleBtn();
-  }
-    document.getElementById("mapholder").style.display='block';
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
-      navigator.geolocation.getCurrentPosition(sendEmail);  
-      helpaudio=setInterval(HealthEmergency,2000);
-      
-    } else {
-      x.innerHTML = "Geolocation is not supported by this browser.";
+var current_Panel = null;
+var current_Color = null;
+var panelnum = 0;
+function show(panel) {
+  if (panel == 1) {
+    if (current_Panel != null) {
+      current_Panel.style.top = "-100%";
     }
-    emergencycode=1;
-  }
-  else{
-    if(speechstate==1){
-      speechstate=0;
-      toggleBtn();
+    current_Panel = document.getElementById("about");
+    current_Color = current_Panel.style.backgroundColor;
+    current_Panel.style.top = "0";
+    current_Panel.style.backgroundColor = "black";
+  } else if (panel == 2) {
+    if (current_Panel != null) {
+      current_Panel.style.top = "-100%";
     }
-    document.getElementById("mapholder").style.display='none';
-    emergencycode=0;
-    clearInterval(helpaudio);
+    current_Panel = document.getElementById("work");
+    current_Color = current_Panel.style.backgroundColor;
+    current_Panel.style.top = "0";
+    current_Panel.style.backgroundColor = "black";
+  } else if (panel == 3) {
+    if (current_Panel != null) {
+      current_Panel.style.top = "-100%";
+      current_Panel.style.backgroundColor = current_Color;
+    }
+    current_Panel = document.getElementById("skills");
+    current_Color = current_Panel.style.backgroundColor;
+    current_Panel.style.top = "0";
+    current_Panel.style.backgroundColor = "black";
+  } else if (panel == 4) {
+    if (current_Panel != null) {
+      current_Panel.style.top = "-100%";
+    }
+    current_Panel = document.getElementById("projects");
+    current_Color = current_Panel.style.backgroundColor;
+    current_Panel.style.top = "0";
+    current_Panel.style.backgroundColor = "black";
+  }
+  if (navigator.userAgentData.mobile == true) {
+    document.getElementById("menu").style.top = "-100%";
   }
 }
-// async function app() {
-//   console.log('Loading mobilenet..');
 
-//   // Load the model.
-//   net = await mobilenet.load();
-//   console.log('Successfully loaded model');
+function openmenu() {
+  document.getElementById("menu").style.top = "0";
+}
+if (navigator.userAgentData.mobile == true) {
+  document.getElementById("info").style.left = "0";
+  document.getElementById("info").style.width = "100vw";
+  document.getElementById("info").style.position = "relative";
+  document.getElementById("projects").style.left = "0";
+  document.getElementById("projects").style.width = "100vw";
+  document.getElementById("projects").style.position = "relative";
+  document.getElementById("skills").style.left = "0";
+  document.getElementById("skills").style.width = "100vw";
+  document.getElementById("skills").style.position = "relative";
+  document.getElementById("work").style.left = "0";
+  document.getElementById("work").style.width = "100vw";
+  document.getElementById("work").style.position = "relative";
+  document.getElementById("about").style.left = "0";
+  document.getElementById("about").style.width = "100vw";
+  document.getElementById("about").style.position = "relative";
+  document.getElementById("menu").style.top = "-100%";
+  document.getElementById("menu").style.width = "100vw";
+  document.getElementById("ham").style.display = "block";
+} else {
+}
 
-//   // if(trained==0){
-//   //   for (let index = 0; index < imagelist.length; index++) {
-//   //     for (let index2 = 0; index2 < imagelist[index].length; index2++) {
-//   //       // Get the intermediate activation of MobileNet 'conv_preds' and pass that
-//   //       // to the KNN classifier.
-//   //       console.log(imagelist[index][index2])
-//   //       imagedata.src=imagelist[index][index2];
-    
-//   //       const activation = net.infer(imagedata, true);
-    
-//   //       // Pass the intermediate activation to the classifier.
-//   //       classifier.addExample(activation, index);
-        
-//   //     }
-//   //   }
-//   //   trained=1;
-//   // }
+jQuery(document).ready(function () {
+  $("body").mousemove(function (e) {
+    var rXP = e.pageX - this.offsetLeft - $(this).width() / 2;
+    var rYP = e.pageY - this.offsetTop - $(this).height() / 2;
+    $("h1").css(
+      "text-shadow",
+      +rYP / 10 +
+        "px " +
+        rXP / 80 +
+        "px rgba(227,6,19,.8), " +
+        rYP / 8 +
+        "px " +
+        rXP / 60 +
+        "px rgba(255,237,0,1), " +
+        rXP / 70 +
+        "px " +
+        rYP / 12 +
+        "px rgba(0,159,227,.7)"
+    );
+  });
+});
 
-//   // Create an object from Tensorflow.js data API which could capture image 
-//   // from the web camera as Tensor.
-//   const webcam = await tf.data.webcam(webcamElement);
+document.body.addEventListener("mousemove", (evt) => {
+  const mouseX = evt.clientX;
+  const mouseY = evt.clientY;
 
-//   // Reads an image from the webcam and associates it with a specific class
-//   // index.
-//   const addExample = async classId => {
-//     // Capture an image from the web camera.
-//     const img = await webcam.capture();
+  gsap.set(".cursor", {
+    x: mouseX,
+    y: mouseY,
+  });
 
-//     // Get the intermediate activation of MobileNet 'conv_preds' and pass that
-//     // to the KNN classifier.
-//     const activation = net.infer(img, true);
-
-//     // Pass the intermediate activation to the classifier.
-//     classifier.addExample(activation, classId);
-
-//     // Dispose the tensor to release the memory.
-//     img.dispose();
-//   };
-
-//   // When clicking a button, add an example for that class.
-//   document.getElementById('class-a').addEventListener('click', () => addExample(0));
-//   document.getElementById('class-b').addEventListener('click', () => addExample(1));
-//   document.getElementById('class-c').addEventListener('click', () => addExample(2));
-
-//   while (true) {
-//     if (classifier.getNumClasses() > 0) {
-//       const img = await webcam.capture();
-
-//       // Get the activation from mobilenet from the webcam.
-//       const activation = net.infer(img, 'conv_preds');
-//       // Get the most likely class and confidence from the classifier module.
-//       const result = await classifier.predictClass(activation);
-
-//       const classes = ['This is Abhi your son', 'This is Dwayne your brother', 'This is Dakota your daughter'];
-//       document.getElementById('textFeedback').innerText = `
-//         prediction: ${classes[result.label]}\n
-//         probability: ${result.confidences[result.label]}
-//       `;
-//       // console.log(result);
-//       if(timer-lastspeechutterence>300 || lastspeechutterence==0 || lastperson!=result.label){
-//         lastperson=result.label;
-//         if(listening){
-//           toggleBtn();
-//           stoplistening(recognition);
-//         }
-//         speechSynthesis.speak(new SpeechSynthesisUtterance(classes[result.label]));
-//         lastspeechutterence=timer;
-
-//       }
-
-//       // Dispose the tensor to release the memory.
-//       img.dispose();
-//     }
-
-//     await tf.nextFrame();
-//   }
-// }
-
-
-app();
+  gsap.to(".shape", {
+    x: mouseX,
+    y: mouseY,
+    stagger: -0.1,
+  });
+});
